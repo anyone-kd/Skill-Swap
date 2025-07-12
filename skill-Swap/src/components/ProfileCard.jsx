@@ -1,15 +1,46 @@
-// ProfileCard.jsx
+
 import React from "react";
 
-const ProfileCard = ({ name, initials, offeredSkills, wantedSkills, rating }) => {
+const ProfileCard = ({ name, offeredSkills, wantedSkills, rating }) => {
+
+  const renderStars = (rating) => {
+  const stars = [];
+  const fullStars = Math.floor(rating);     // e.g., 4
+  const hasHalfStar = rating % 1 >= 0.5;     // e.g., 0.5
+  const totalStars = 5;
+
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(<span className="text-amber-400 text-xl" key={i}>★</span>); // filled star
+  }
+
+  if (hasHalfStar) {
+    stars.push(<span className="text-amber-400" key="half">☆</span>); // half or outlined star
+  }
+
+  while (stars.length < totalStars) {
+    stars.push(<span key={`empty-${stars.length}`}>☆</span>); // empty star
+  }
+
+  return stars;
+};
+
+const addInitials=()=>{
+  const nameparts=name.split(" ");
+  if (nameparts.length === 1) {
+    return nameparts[0].charAt(0).toUpperCase();
+  } else {
+    return nameparts[0].charAt(0).toUpperCase() + nameparts[1].charAt(0).toUpperCase();
+  }
+}
+
   return (
-    <div className="profile-card bg-white/95 backdrop-blur-xl border border-white/30 rounded-3xl p-8 flex flex-col md:flex-row items-center gap-6 shadow-lg hover:-translate-y-1 hover:shadow-2xl hover:border-blue-600/20 transition">
-      <div className="profile-avatar w-20 h-20 rounded-full bg-gradient-to-br from-blue-700 to-blue-950 text-white flex items-center justify-center text-2xl font-bold shadow-md">
-        {initials}
+    <div className="profile-card bg-black/50 backdrop-blur-xl border border-white/30 rounded mx-5 p-8 flex flex-col md:flex-row items-center gap-6 shadow-lg hover:-translate-y-1 hover:shadow-2xl hover:border-blue-600/20 transition">
+      <div className="profile-avatar w-40 h-40 rounded-full bg-gradient-to-br from-blue-700 to-blue-950 text-white flex items-center justify-center text-4xl font-bold shadow-md">
+        {addInitials()}
       </div>
 
       <div className="profile-info flex-1">
-        <h3 className="profile-name text-2xl font-bold text-blue-950 mb-4">{name}</h3>
+        <h3 className="profile-name text-2xl font-bold text-white/95 mb-4">{name}</h3>
 
         <div className="skills-section mb-3">
           <div className="skills-label text-sm font-semibold text-emerald-500 mb-2">Skills Offered</div>
@@ -46,7 +77,7 @@ const ProfileCard = ({ name, initials, offeredSkills, wantedSkills, rating }) =>
         </button>
         <div className="rating text-sm text-slate-300 flex items-center gap-2">
           <span className="stars text-amber-400 text-base">{rating.stars}</span>
-          <span>{rating.value}/5</span>
+          <span>{renderStars(rating.value)}/5</span>
         </div>
       </div>
     </div>
